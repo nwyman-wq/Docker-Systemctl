@@ -1,0 +1,57 @@
+#!/bin/bash
+
+echo -e "\n\033[1;34m[INFO]\033[0m Starting full systemctl-replacement installation...\n"
+
+# Step 1: Update system
+echo -e "\033[1;33m[STEP 1]\033[0m Updating package list..."
+if apt update -y; then
+    echo -e "✅ \033[1;32mUpdate completed.\033[0m"
+else
+    echo -e "❌ \033[1;31mUpdate failed!\033[0m"
+    exit 1
+fi
+
+# Step 2: Upgrade system
+echo -e "\n\033[1;33m[STEP 2]\033[0m Upgrading packages..."
+if apt upgrade -y; then
+    echo -e "✅ \033[1;32mUpgrade completed.\033[0m"
+else
+    echo -e "❌ \033[1;31mUpgrade failed!\033[0m"
+    exit 1
+fi
+
+# Step 3: Install Python3
+echo -e "\n\033[1;33m[STEP 3]\033[0m Installing Python 3..."
+if apt install python3 -y; then
+    echo -e "✅ \033[1;32mPython 3 installed.\033[0m"
+else
+    echo -e "❌ \033[1;31mPython 3 installation failed!\033[0m"
+    exit 1
+fi
+
+# Step 4: Download systemctl replacement
+echo -e "\n\033[1;33m[STEP 4]\033[0m Downloading fake systemctl from nwyman-wq repo..."
+if curl -o /usr/bin/systemctl https://raw.githubusercontent.com/nwyman-wq/docker-systemctl-replacement/master/files/docker/systemctl3.py; then
+    echo -e "✅ \033[1;32mDownloaded systemctl replacement.\033[0m"
+else
+    echo -e "❌ \033[1;31mDownload failed!\033[0m"
+    exit 1
+fi
+
+# Step 5: Make it executable
+echo -e "\n\033[1;33m[STEP 5]\033[0m Making systemctl executable..."
+if chmod +x /usr/bin/systemctl; then
+    echo -e "✅ \033[1;32mExecutable set.\033[0m"
+else
+    echo -e "❌ \033[1;31mchmod failed!\033[0m"
+    exit 1
+fi
+
+# Step 6: Verify version
+echo -e "\n\033[1;33m[STEP 6]\033[0m Verifying installation..."
+if systemctl --version; then
+    echo -e "\n✅ \033[1;32mInstallation successful! systemctl is ready to use.\033[0m"
+else
+    echo -e "❌ \033[1;31mSomething went wrong with systemctl.\033[0m"
+    exit 1
+fi

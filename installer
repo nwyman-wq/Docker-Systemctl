@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo -e "\n\033[1;34m[INFO]\033[0m Starting installation of Docker Systemctl Replacement...\n"
+
+# Step 1: Update system
+echo -e "\033[1;33m[STEP 1]\033[0m Updating system packages..."
+apt update -y && apt upgrade -y
+
+# Step 2: Install curl and python3
+echo -e "\033[1;33m[STEP 2]\033[0m Installing curl and python3..."
+apt install curl python3 -y
+
+# Step 3: Download the docker-systemctl-installer script
+echo -e "\033[1;33m[STEP 3]\033[0m Downloading docker-systemctl-installer script..."
+curl -o docker-systemctl-installer https://raw.githubusercontent.com/nwyman-wq/Docker-Systemctl/main/docker-systemctl-installer
+
+# Step 4: Make the script executable
+echo -e "\033[1;33m[STEP 4]\033[0m Making installer executable..."
+chmod +x docker-systemctl-installer
+
+# Step 5: Run the installer
+echo -e "\033[1;33m[STEP 5]\033[0m Running installer script..."
+bash docker-systemctl-installer
+
+# Step 6: Confirm
+echo -e "\n\033[1;32m✅ Docker systemctl replacement installed and ready!\033[0m"
+systemctl --version || echo -e "\033[1;31m❌ systemctl command not responding!\033[0m"
